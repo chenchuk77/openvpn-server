@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+
+# ./start.sh - will start web-server and openvpn-server
+# ./start.sh dev - will start a sleeping container, start manually by invoke ./entrypoint.sh
+
 OVERRIDE_CMD=""
 
 if [[ "$1" = "dev" ]]; then
@@ -21,5 +25,5 @@ docker run -d --rm \
      tunnelx:0.0.1 ${OVERRIDE_CMD}
 #  -e PUBLIC_IP=$(curl -4 ifconfig.io)
 
-
+echo "download client config at http://$(curl -4 ifconfig.io):8888/client.conf"
 [[ "$1" = "dev" ]] && docker exec -ti tunnelx /bin/bash
