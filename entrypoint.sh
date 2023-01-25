@@ -128,7 +128,7 @@ echo "creating openvpn client config ..."
 cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/client.conf
 cd /app/webserver
 python3 -m http.server 8888 2>&1 &
-echo "download openvpn client config at: http://${PUBLIC_IP}/client.conf"
+echo "download openvpn client config at: http://${PUBLIC_IP}:8888/client.conf"
 #cd $CWD
 
 # Start and enable the OpenVPN service
