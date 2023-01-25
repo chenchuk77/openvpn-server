@@ -1,5 +1,13 @@
 #!/bin/bash -e
 
+OVERRIDE_CMD=""
+
+if [[ "$1" = "dev" ]]; then
+  OVERRIDE_CMD="/bin/sleep 1000h"
+  ./rebuild.sh
+fi
+
+
 echo "removing old tunnelx container ..."
 docker stop tunnelx || true
 docker rm tunnelx || true
@@ -10,7 +18,8 @@ docker run -d --rm \
   --privileged \
   -p 8888:8888 \
   -p 1194:1194/udp \
-     tunnelx:0.0.1
+     tunnelx:0.0.1 ${OVERRIDE_CMD}
 #  -e PUBLIC_IP=$(curl -4 ifconfig.io)
 
 
+[[ "$1" = "dev" ]] && docker exec -ti tunnelx /bin/bash

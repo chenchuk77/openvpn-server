@@ -35,7 +35,10 @@ COPY client.conf /root/client-configs/base.conf
 # Volume configuration
 #VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
 #COPY start.sh /start.sh
+
+
 CMD ["/bin/sleep", "1000h"]
+CMD ["./entrypoint.sh"]
 
 # 1194/udp for inbound connection from openvpn client
 # 8888 webserver to download openvpn client config

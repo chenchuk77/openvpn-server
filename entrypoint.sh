@@ -131,9 +131,11 @@ cd /app/webserver
 #python3 -m http.server 8888 2>&1 &
 python3 webserver.py 2>&1 &
 echo "download openvpn client config at: http://${PUBLIC_IP}:8888/client.conf"
+sleep 3s
 #cd $CWD
 
 # Start and enable the OpenVPN service
+echo "starting vpn server"
 #CWD=$(pwd)
 cd /etc/openvpn/server 
 /usr/sbin/openvpn \
