@@ -49,9 +49,9 @@ sed -i "s/;user nobody/user nobody/" /etc/openvpn/server/server.conf
 sed -i "s/;group nobody/group nogroup/" /etc/openvpn/server/server.conf
 
 # disable split-tunneling (all traffic 0.0.0.0 from clients will come to this vpn-gw )
-echo "push \"route ${PRIVATE_SUBNET} ${PRIVATE_NETMASK}\"" >> etc/openvpn/server/server.conf
-echo "push \"redirect-gateway def1 bypass-dhcp\"" >> etc/openvpn/server/server.conf
-echo "push \"dhcp-option DNS 8.8.8.8\"" >> etc/openvpn/server/server.conf
+echo "push \"route ${PRIVATE_SUBNET} ${PRIVATE_NETMASK}\"" >> /etc/openvpn/server/server.conf
+echo "push \"redirect-gateway def1 bypass-dhcp\"" >> /etc/openvpn/server/server.conf
+echo "push \"dhcp-option DNS 8.8.8.8\"" >> /etc/openvpn/server/server.conf
 
 # Allow IP forwarding
 sed -i "s/#net.ipv4.ip_forward/net.ipv4.ip_forward/" /etc/sysctl.conf
@@ -116,21 +116,36 @@ cat ${BASE_CONFIG} \
     <(echo -e '</tls-crypt>') \
     > ${OUTPUT_DIR}/${name}.ovpn
 
-echo "save the below text to the client machine as /etc/openvpn/client.conf :"
-echo "--- client config start ---"
-echo ""
-cat ${OUTPUT_DIR}/${name}.ovpn
-echo ""
-echo "--- client config end ---"
+#echo "save the below text to the client machine as /etc/openvpn/client.conf :"
+#echo "--- client config start ---"
+#echo ""
+#cat ${OUTPUT_DIR}/${name}.ovpn
+#echo ""
+#echo "--- client config end ---"
+
+#CWD=$(pwd)
+echo "creating openvpn client config ..."
+cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/client.conf
+cd /app/webserver
+python3 -m http.server 8888 2>&1 &
+echo "download openvpn client config at: http://${PUBLIC_IP}/client.conf"
+#cd $CWD
 
 # Start and enable the OpenVPN service
-CWD=$(pwd)
+#CWD=$(pwd)
 cd /etc/openvpn/server 
 /usr/sbin/openvpn \
-  --status ${CWD}/openvpn-status.log \
+  --status ~/openvpn-ca/openvpn-status.log \
   --status-version 2 \
   --suppress-timestamps \
   --config /etc/openvpn/server/server.conf
 
-
+# WORKS !!!
+#CWD=$(pwd)
+#cd /etc/openvpn/server
+#/usr/sbin/openvpn \
+#  --status ${CWD}/openvpn-status.log \
+#  --status-version 2 \
+#  --suppress-timestamps \
+#  --config /etc/openvpn/server/server.conf
 
