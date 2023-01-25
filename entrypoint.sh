@@ -61,6 +61,7 @@ sysctl -p
 sed -i "s/# rules.before/# rules.before\n# START OPENVPN RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n-A POSTROUTING -s 10.8.0.0\/8 -o ${VPNDEVICE} -j MASQUERADE\nCOMMIT\n# END OPENVPN RULES/" /etc/ufw/before.rules
 sed -i "s/DEFAULT_FORWARD_POLICY=\"DROP\"/DEFAULT_FORWARD_POLICY=\"ACCEPT\"/" /etc/default/ufw
 ufw allow 1194/udp
+ufw allow 8888/tcp
 ufw allow OpenSSH
 ufw disable
 yes "y" | ufw enable
