@@ -8,8 +8,8 @@ echo "starting a new tunnelx:0.0.1 on localhost:8888 ..."
 docker run -d --rm \
   --name tunnelx \
   --privileged \
-  -p 1194:1194/udp \
   -p 8888:8888 \
+  -p 1194:1194/udp \
      tunnelx:0.0.1
 #  -e PUBLIC_IP=$(curl -4 ifconfig.io)
 
