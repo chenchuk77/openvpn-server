@@ -90,66 +90,61 @@ echo ";down /etc/openvpn/update-systemd-resolved" >> ~/client-configs/base.conf
 echo ";down-pre" >> ~/client-configs/base.conf
 echo ";dhcp-option DOMAIN-ROUTE ." >> ~/client-configs/base.conf
 
-# add user 'user'
-cd ~/openvpn-ca/
-name=user
-yes "" | ./easyrsa gen-req ${name} nopass
-cp pki/private/${name}.key ~/client-configs/keys/
-yes "yes" | ./easyrsa sign-req client ${name}
-cp /root/openvpn-ca/pki/issued/${name}.crt ~/client-configs/keys/
-cp /etc/openvpn/server/ta.key ~/client-configs/keys/
-cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 
-# make config for user 'user'
-KEY_DIR=~/client-configs/keys
-OUTPUT_DIR=~/client-configs/files
-BASE_CONFIG=~/client-configs/base.conf
+declare -a users=("chen" "kiril")
 
-cat ${BASE_CONFIG} \
-    <(echo -e '<ca>') \
-    ${KEY_DIR}/ca.crt \
-    <(echo -e '</ca>\n<cert>') \
-    ${KEY_DIR}/${name}.crt \
-    <(echo -e '</cert>\n<key>') \
-    ${KEY_DIR}/${name}.key \
-    <(echo -e '</key>\n<tls-crypt>') \
-    ${KEY_DIR}/ta.key \
-    <(echo -e '</tls-crypt>') \
-    > ${OUTPUT_DIR}/${name}.ovpn
+for name in ${users[@]}; do
+  # add user 'user'
+  cd ~/openvpn-ca/
+  name=user
+  yes "" | ./easyrsa gen-req ${name} nopass
+  cp pki/private/${name}.key ~/client-configs/keys/
+  yes "yes" | ./easyrsa sign-req client ${name}
+  cp /root/openvpn-ca/pki/issued/${name}.crt ~/client-configs/keys/
+  cp /etc/openvpn/server/ta.key ~/client-configs/keys/
+  cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 
-#echo "save the below text to the client machine as /etc/openvpn/client.conf :"
-#echo "--- client config start ---"
-#echo ""
-#cat ${OUTPUT_DIR}/${name}.ovpn
-#echo ""
-#echo "--- client config end ---"
+  # make config for user 'user'
+  KEY_DIR=~/client-configs/keys
+  OUTPUT_DIR=~/client-configs/files
+  BASE_CONFIG=~/client-configs/base.conf
 
-#CWD=$(pwd)
-echo "creating openvpn client config ..."
-cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/client.conf
+  cat ${BASE_CONFIG} \
+      <(echo -e '<ca>') \
+      ${KEY_DIR}/ca.crt \
+      <(echo -e '</ca>\n<cert>') \
+      ${KEY_DIR}/${name}.crt \
+      <(echo -e '</cert>\n<key>') \
+      ${KEY_DIR}/${name}.key \
+      <(echo -e '</key>\n<tls-crypt>') \
+      ${KEY_DIR}/ta.key \
+      <(echo -e '</tls-crypt>') \
+      > ${OUTPUT_DIR}/${name}.ovpn
+
+  echo "creating openvpn client config for ${name} ..."
+  #cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/client.conf
+  cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/${name}.ovpn
+
+
+done
+
+
+
+
+
+
+
 cd /app/webserver
-#python3 -m http.server 8888 2>&1 &
 python3 webserver.py 2>&1 &
 echo "download openvpn client config at: http://${PUBLIC_IP}:8888/client.conf"
 sleep 3s
-#cd $CWD
 
 # Start and enable the OpenVPN service
 echo "starting vpn server"
-#CWD=$(pwd)
-cd /etc/openvpn/server 
+cd /etc/openvpn/server
 /usr/sbin/openvpn \
   --status ~/openvpn-ca/openvpn-status.log \
   --status-version 2 \
   --suppress-timestamps \
   --config /etc/openvpn/server/server.conf
-
-# WORKS !!!
-#CWD=$(pwd)
-#cd /etc/openvpn/server
-#/usr/sbin/openvpn \
-#  --status ${CWD}/openvpn-status.log \
-#  --status-version 2 \
-#  --suppress-timestamps \
-#  --config /etc/openvpn/server/server.conf
 

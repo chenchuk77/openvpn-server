@@ -7,17 +7,24 @@ import os
 app = Flask(__name__)
 
 # linux client expects client.conf
-@app.route('/client.conf')
-def download():
-    path = 'client.conf'
-    return send_file(path, as_attachment=True)
+# @app.route('/client.conf')
+# def download():
+#     path = 'chen.conf'
+#     return send_file(path, as_attachment=True)
 
 
 # windows client must be different and needs the same file as *.ovpn
-@app.route('/client.ovpn')
-def download_for_windows():
-    path = 'client.conf'
-    return send_file(path, download_name='client.ovpn', as_attachment=True)
+# @app.route('/client.ovpn')
+# def download_for_windows():
+#     path = 'client.conf'
+#     return send_file(path, download_name='client.ovpn', as_attachment=True)
+
+
+# windows client must be different and needs the same file as *.ovpn
+@app.route('/conf/<name>')
+def download_for_windows(name):
+    path = '{}.ovpn'.format(name)
+    return send_file(path, as_attachment=True)
 
 
 if __name__ == '__main__':
