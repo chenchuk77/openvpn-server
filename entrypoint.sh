@@ -91,12 +91,12 @@ echo ";down-pre" >> ~/client-configs/base.conf
 echo ";dhcp-option DOMAIN-ROUTE ." >> ~/client-configs/base.conf
 
 
-declare -a users=("chen" "kiril")
+#declare -a users=("chen" "kiril")
+#for name in ${users[@]}; do
 
-for name in ${users[@]}; do
-  # add user 'user'
+for name in $(cat /app/userlist); do
+  # add user
   cd ~/openvpn-ca/
-#  name=user
   yes "" | ./easyrsa gen-req ${name} nopass
   cp pki/private/${name}.key ~/client-configs/keys/
   yes "yes" | ./easyrsa sign-req client ${name}
@@ -124,15 +124,7 @@ for name in ${users[@]}; do
   echo "creating openvpn client config for ${name} ..."
   #cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/client.conf
   cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/${name}.ovpn
-
-
 done
-
-
-
-
-
-
 
 cd /app/webserver
 python3 webserver.py 2>&1 &

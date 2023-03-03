@@ -37,11 +37,12 @@ else
 #  echo "download client config at http://$(curl -s -4 ifconfig.io):8888/client.ovpn"
 #  echo "and save this somewhere as client.ovpn"
 #  echo ""
+  echo "u can download client config here:"
   echo ""
-  echo "for windows client:"
-  echo "download client config at http://$(curl -s -4 ifconfig.io):8888/conf/chen.ovpn"
-  echo "download client config at http://$(curl -s -4 ifconfig.io):8888/conf/kiril.ovpn"
-  echo "and save this somewhere as client.ovpn"
+  for name in $(cat /app/userlist); do
+    echo "  http://$(curl -s -4 ifconfig.io):8888/conf/${name}"
+  done
+  echo "open this file with openvpn-connect."
   echo ""
 
 fi

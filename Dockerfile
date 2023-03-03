@@ -28,6 +28,7 @@ RUN mkdir -p /app/webserver
 #ENV php_conf /etc/php/8.1/fpm/php.ini
 #ENV nginx_conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /app/entrypoint.sh
+COPY userlist /app/userlist
 COPY webserver.py /app/webserver/webserver.py
 COPY server.conf /etc/openvpn/server/server.conf
 COPY client.conf /root/client-configs/base.conf
