@@ -27,8 +27,17 @@ else
     --name tunnelx --privileged \
     -p 8888:8888 -p 1194:1194/udp \
        tunnelx:0.0.1
+  echo "tunnelx daemon started ..."
+  echo ""
+  echo "for linux client:"
   echo "download client config at http://$(curl -s -4 ifconfig.io):8888/client.conf"
-  echo "for linux openvpn client, save this as /etc/openvpn/client.conf"
+  echo "and save this as /etc/openvpn/client.conf"
+  echo ""
+  echo "for windows client:"
+  echo "download client config at http://$(curl -s -4 ifconfig.io):8888/client.ovpn"
+  echo "and save this somewhere as client.ovpn"
+  echo ""
+
 fi
 #
 #
