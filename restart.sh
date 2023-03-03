@@ -39,7 +39,7 @@ else
 #  echo ""
   echo "u can download client config here:"
   echo ""
-  for name in $(cat /app/userlist); do
+  for name in $(cat userlist); do
     echo "  http://$(curl -s -4 ifconfig.io):8888/conf/${name}"
   done
   echo "open this file with openvpn-connect."
