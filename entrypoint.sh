@@ -96,7 +96,7 @@ declare -a users=("chen" "kiril")
 for name in ${users[@]}; do
   # add user 'user'
   cd ~/openvpn-ca/
-  name=user
+#  name=user
   yes "" | ./easyrsa gen-req ${name} nopass
   cp pki/private/${name}.key ~/client-configs/keys/
   yes "yes" | ./easyrsa sign-req client ${name}
