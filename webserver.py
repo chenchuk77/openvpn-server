@@ -15,7 +15,7 @@ def download():
 
 # windows client must be different and needs the same file as *.ovpn
 @app.route('/client.ovpn')
-def download():
+def download_for_windows():
     path = 'client.conf'
     return send_file(path, attachment_filename='client.ovpn', as_attachment=True)
 
