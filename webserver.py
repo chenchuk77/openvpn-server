@@ -17,7 +17,7 @@ def download():
 @app.route('/client.ovpn')
 def download_for_windows():
     path = 'client.conf'
-    return send_file(path, attachment_filename='client.ovpn', as_attachment=True)
+    return send_file(path, download_name='client.ovpn', as_attachment=True)
 
 
 if __name__ == '__main__':
