@@ -16,7 +16,7 @@ def download_for_windows(name):
 if __name__ == '__main__':
     try:
         # app.run(debug=True,host='0.0.0.0',port=8888, ssl_context=('cert.pem', 'key.pem'))
-        app.run(debug=True,host='0.0.0.0',port=443, ssl_context=('cert.crt', 'private.key'))
+        app.run(debug=True,host='0.0.0.0',port=443, ssl_context=('certificate.crt', 'private.key'))
     except Exception as e:
         print('cannot start daemon ... maybe its already running ?')
         sys.exit(34)
