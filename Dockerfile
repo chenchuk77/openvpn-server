@@ -31,6 +31,7 @@ COPY userlist /app/userlist
 COPY 7B2DD8BA687F71B034B03C9072808873.txt /app/webserver/7B2DD8BA687F71B034B03C9072808873.txt
 COPY entrypoint.sh /app/entrypoint.sh
 COPY webserver.py /app/webserver/webserver.py
+COPY webserver-cert-validation.py /app/webserver/webserver-cert-validation.py
 COPY server.conf /etc/openvpn/server/server.conf
 COPY client.conf /root/client-configs/base.conf
 #RUN sed -i -e 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' ${php_conf} && echo "\ndaemon off;" >> ${nginx_conf}
