@@ -24,11 +24,12 @@ RUN apt-get -y install net-tools vim python3-pip
 RUN pip3 install Flask
 RUN mkdir -p /app/webserver
 
-#ENV nginx_vhost /etc/nginx/sites-available/default
-#ENV php_conf /etc/php/8.1/fpm/php.ini
-#ENV nginx_conf /etc/nginx/nginx.conf
-COPY userlist /app/userlist
+# ssl files
 COPY 7B2DD8BA687F71B034B03C9072808873.txt /app/webserver/7B2DD8BA687F71B034B03C9072808873.txt
+COPY certificate.crt /app/webserver/certificate.crt
+COPY private.key /app/webserver/private.key
+
+COPY userlist /app/userlist
 COPY entrypoint.sh /app/entrypoint.sh
 COPY webserver.py /app/webserver/webserver.py
 COPY webserver-cert-validation.py /app/webserver/webserver-cert-validation.py
