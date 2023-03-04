@@ -62,6 +62,7 @@ sed -i "s/# rules.before/# rules.before\n# START OPENVPN RULES\n# NAT table rule
 sed -i "s/DEFAULT_FORWARD_POLICY=\"DROP\"/DEFAULT_FORWARD_POLICY=\"ACCEPT\"/" /etc/default/ufw
 ufw allow 1194/udp
 ufw allow 443/tcp
+ufw allow 80/tcp
 ufw allow OpenSSH
 ufw disable
 yes "y" | ufw enable
@@ -134,7 +135,13 @@ openssl req -x509 -newkey rsa:4096 -nodes -out /app/webserver/cert.pem -keyout /
 
 
 cd /app/webserver
+
+echo "starting webserver for cert validation on tcp/80 ..."
+python3 webserver-cert-validation.py 2>&1 &
+
+echo "starting webserver for exposing ovpn profiles on tcp/443 ..."
 python3 webserver.py 2>&1 &
+
 echo "download openvpn client config at: https://${PUBLIC_IP}/conf/<name>"
 sleep 3s
 

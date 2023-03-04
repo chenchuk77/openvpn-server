@@ -44,4 +44,4 @@ CMD ["./entrypoint.sh"]
 
 # 1194/udp for inbound connection from openvpn client
 # 443 webserver to download openvpn client config
-EXPOSE 1194 443
+EXPOSE 1194 443 80
