@@ -26,6 +26,17 @@ def download_for_windows(name):
     path = '{}.ovpn'.format(name)
     return send_file(path, as_attachment=True)
 
+# this is for validating ssl cert by exposing file downloaded from sslforfree
+# should be exposed as : http://tunnelx.ddns.net/.well-known/pki-validation/7B2DD8BA687F71B034B03C9072808873.txt
+# see docs here : https://manage.sslforfree.com/certificate/verify/69d0f28eb435e24ac64e98df832989e2
+@app.route('/.well-known/pki-validation/7B2DD8BA687F71B034B03C9072808873.txt')
+def cert_validation():
+    return send_file('7B2DD8BA687F71B034B03C9072808873.txt', as_attachment=True)
+
+
+
+
+
 
 if __name__ == '__main__':
     try:
