@@ -126,6 +126,13 @@ for name in $(cat /app/userlist); do
   cp ${OUTPUT_DIR}/${name}.ovpn /app/webserver/${name}.ovpn
 done
 
+#
+#SUBJ="/C=DK/ST=Jylland/O=Company Name"
+SUBJ="/C=DK/ST=Jylland/O=Tunnelx MGR"
+openssl req -x509 -newkey rsa:4096 -nodes -out /app/webserver/cert.pem -keyout /app/webserver/key.pem -days 365 -subj "$SUBJ"
+
+
+
 cd /app/webserver
 python3 webserver.py 2>&1 &
 echo "download openvpn client config at: http://${PUBLIC_IP}:8888/client.conf"
