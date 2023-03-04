@@ -42,5 +42,5 @@ CMD ["/bin/sleep", "1000h"]
 CMD ["./entrypoint.sh"]
 
 # 1194/udp for inbound connection from openvpn client
-# 8888 webserver to download openvpn client config
-EXPOSE 1194 8888
+# 443 webserver to download openvpn client config
+EXPOSE 1194 443

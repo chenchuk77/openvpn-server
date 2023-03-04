@@ -61,7 +61,7 @@ sysctl -p
 sed -i "s/# rules.before/# rules.before\n# START OPENVPN RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n-A POSTROUTING -s 10.8.0.0\/8 -o ${VPNDEVICE} -j MASQUERADE\nCOMMIT\n# END OPENVPN RULES/" /etc/ufw/before.rules
 sed -i "s/DEFAULT_FORWARD_POLICY=\"DROP\"/DEFAULT_FORWARD_POLICY=\"ACCEPT\"/" /etc/default/ufw
 ufw allow 1194/udp
-ufw allow 8888/tcp
+ufw allow 443/tcp
 ufw allow OpenSSH
 ufw disable
 yes "y" | ufw enable
@@ -135,7 +135,7 @@ openssl req -x509 -newkey rsa:4096 -nodes -out /app/webserver/cert.pem -keyout /
 
 cd /app/webserver
 python3 webserver.py 2>&1 &
-echo "download openvpn client config at: http://${PUBLIC_IP}:8888/client.conf"
+echo "download openvpn client config at: https://${PUBLIC_IP}/conf/<name>"
 sleep 3s
 
 # Start and enable the OpenVPN service

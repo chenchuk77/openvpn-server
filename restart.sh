@@ -14,18 +14,18 @@ if [[ "$1" = "dev" ]]; then
   OVERRIDE_CMD="/bin/sleep 1000h"
   docker run -d --rm \
     --name tunnelx --privileged \
-    -p 8888:8888 -p 1194:1194/udp \
+    -p 443:443 -p 1194:1194/udp \
        tunnelx:0.0.1 ${OVERRIDE_CMD}
   # login
   docker exec -ti tunnelx /bin/bash
 else
-  echo "starting a new tunnelx:0.0.1 on localhost:8888 ..."
+  echo "starting a new tunnelx:0.0.1 on localhost:443 ..."
   # removing old tunnelx container
   docker stop tunnelx > /dev/null 2>&1 || true
   docker rm tunnelx   > /dev/null 2>&1 || true
   docker run -d --rm \
     --name tunnelx --privileged \
-    -p 8888:8888 -p 1194:1194/udp \
+    -p 443:443 -p 1194:1194/udp \
        tunnelx:0.0.1
   echo "tunnelx daemon started ..."
   echo ""
@@ -40,7 +40,7 @@ else
   echo "u can download client config here:"
   echo ""
   for name in $(cat userlist); do
-    echo "  http://$(curl -s -4 ifconfig.io):8888/conf/${name}"
+    echo "  https://$(curl -s -4 ifconfig.io)/conf/${name}"
   done
   echo "open this file with openvpn-connect."
   echo ""
